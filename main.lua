@@ -14,5 +14,5 @@ debug = true
 math.randomseed( os.time() )
 
 for i=1,1 do
-	local theAnimal = Planet:new()
+	local thePlanet = Planet:new()
 end
