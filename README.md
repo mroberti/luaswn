@@ -1,6 +1,6 @@
 # luaswn
 A Lua implementation of Stars Without Number
-Made in corona, but the pure Lua portion should work without any issues, except for maybe the JSON loader? Let me know! Also I OOPd the hell out of it using https://github.com/Yonaba/30log for no particular reason...
+Made in corona, but it should be pur Lua and should work without any issues, except for maybe the JSON loader? Let me know! Also I OOPd the hell out of it using https://github.com/Yonaba/30log for no particular reason...
 
 # LICENSE
 The SWN Toolbox (Lua version)
