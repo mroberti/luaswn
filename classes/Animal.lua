@@ -2,7 +2,7 @@ Animal = class("Animal")
 
 function Animal:init(data)
     -- Classes' variables
-    local animalTable = loadjson("tables/animal.json")
+    local animalTable = loadjson(".\\tables\\animal.JSON")
 
     self.traits = ""
     self.groupSize = RAND(1,7)

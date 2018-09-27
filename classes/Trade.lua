@@ -1,7 +1,7 @@
 Trade = class("Trade")
 
 function Trade:init(data)
-    local tradeTable = loadjson("tables/trade.json")
+    local tradeTable = loadjson(".\\tables\\trade.JSON")
     self.tech_level="TL4"
     self.selling = {}
     self.wanted = {}
@@ -75,8 +75,9 @@ function Trade:init(data)
     end
 
     print("Unwanted: "..self.unwanted[1])
+
     if(#self.unwanted>1)then
-        for i=2, #self.wanted do
+        for i=2, #self.unwanted do
             print("          "..self.unwanted[i])
         end
         print("")
@@ -84,10 +85,10 @@ function Trade:init(data)
     end
 
     local size = #tradeTable["trade_item"][self.tech_level]
+    shuffledTradeItems=ShuffleTable(tradeTable["trade_item"][self.tech_level])
 
-    while( #self.other < size )
-    do
-        local tradeItem = choice(tradeTable["trade_item"][self.tech_level])
+    for i=1,#shuffledTradeItems do
+        local tradeItem = shuffledTradeItems[i]
         local itemDetails = tradeTable["item_detail"][tradeItem]
         local price
         local tempNum = RAND(1,2)
@@ -96,17 +97,35 @@ function Trade:init(data)
         else
             price = itemDetails.base_price + (itemDetails.base_price*(ParseRoll(itemDetails.standard_value)/100))
         end
-        local theString = tradeItem..": "..price.." credits"
+        local theString = tradeItem..": " ..price.." credits"
         -- TODO remove that specific trade item from the table
         -- table.remove(tradeTable["trade_item"],tradeTable["trade_item"][self.tech_level])
         -- so there's gonna be duplicates for now... 
         table.insert(self.other,theString)
     end
 
-    print("Other: "..self.other[1])
+    -- while( #self.other < size )
+    -- do
+    --     local tradeItem = choice(tradeTable["trade_item"][self.tech_level])
+    --     local itemDetails = tradeTable["item_detail"][tradeItem]
+    --     local price
+    --     local tempNum = RAND(1,2)
+    --     if(tempNum==1)then
+    --         price = itemDetails.base_price - (itemDetails.base_price*(ParseRoll(itemDetails.standard_value)/100))
+    --     else
+    --         price = itemDetails.base_price + (itemDetails.base_price*(ParseRoll(itemDetails.standard_value)/100))
+    --     end
+    --     local theString = tradeItem..": "..price.." credits"
+    --     -- TODO remove that specific trade item from the table
+    --     -- table.remove(tradeTable["trade_item"],tradeTable["trade_item"][self.tech_level])
+    --     -- so there's gonna be duplicates for now... 
+    --     table.insert(self.other,theString)
+    -- end
+
+    print("Other:    "..self.other[1])
     if(#self.other>1)then
         for i=2, #self.other do
-            print("       "..self.other[i])
+            print("          "..self.other[i])
         end
         print("")
         print("")

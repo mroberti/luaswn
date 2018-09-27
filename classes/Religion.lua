@@ -1,7 +1,7 @@
 Religion = class("Religion")
 
 function Religion:init(data)
-    local religionTable = loadjson("tables/religion.json")
+    local religionTable = loadjson(".\\tables\\religion.JSON")
     self.evolution = choice(religionTable["evolution"])
     self.leadership = choice(religionTable["leadership"])
     self.origin_tradition = choice(religionTable["origin_tradition"])

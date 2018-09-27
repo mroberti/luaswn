@@ -1,7 +1,7 @@
 NPC = class("NPC")
 
 function NPC:init(data)
-    local NPCTable = loadjson("tables/NPC.json")
+    local NPCTable = loadjson(".\\tables\\NPC.JSON")
     self.name = ""
     self.gender         = choice(NPCTable["gender"])
     self.age            = choice(NPCTable["age"])

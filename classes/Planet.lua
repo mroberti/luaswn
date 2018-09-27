@@ -1,15 +1,15 @@
-local Adventure = require("classes.Adventure")
-local Trade = require("classes.Trade")
-local Architecture = require("classes.Architecture")
-local Political_Party = require("classes.PoliticalParty")
-local World = require("classes.World")
-local Animal = require("classes.Animal")
-local Corporation = require("classes.Corporation")
-local Religion = require("classes.Religion")
-local Heresy = require("classes.Heresy")
-local Faction = require("classes.Faction")
-local Alien = require("classes.Alien")
-local NPC = require("classes.NPC")
+local Adventure = require(".\\classes\\Adventure")
+local Trade = require(".\\classes\\Trade")
+local Architecture = require(".\\classes\\Architecture")
+local Political_Party = require(".\\classes\\PoliticalParty")
+local World = require(".\\classes\\World")
+local Animal = require(".\\classes\\Animal")
+local Corporation = require(".\\classes\\Corporation")
+local Religion = require(".\\classes\\Religion")
+local Heresy = require(".\\classes\\Heresy")
+local Faction = require(".\\classes\\Faction")
+local Alien = require(".\\classes\\Alien")
+local NPC = require(".\\classes\\NPC")
 
 local Planet = {}
 local Planet_mt = { __index = Planet }	-- metatable
@@ -17,7 +17,7 @@ local Planet_mt = { __index = Planet }	-- metatable
 
 function Planet.new()	-- constructor
 	local newPlanet = {}
-    local worldTable = loadjson("tables/world.json")
+    local worldTable = loadjson(".\\tables\\world.json")
     newPlanet.atmosphere=choice(worldTable["atmosphere"])
     newPlanet.temperature=choice(worldTable["temperature"])
     newPlanet.biosphere=choice(worldTable["biosphere"])

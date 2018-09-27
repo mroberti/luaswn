@@ -1,7 +1,7 @@
 PoliticalParty = class("PoliticalParty")
 
 function PoliticalParty:init(data)
-    local politicalTable = loadjson("tables/political_party.json")
+    local politicalTable = loadjson(".\\tables\\political_party.JSON")
     self.leadership = choice(politicalTable["leadership"])
     self.economic_policy = choice(politicalTable["economic_policy"])
     self.important_issues = choice(politicalTable["important_issues"])

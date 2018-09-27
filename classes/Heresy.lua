@@ -1,7 +1,7 @@
 Heresy = class("Heresy")
 
 function Heresy:init(data)
-    local heresyTable = loadjson("tables/heresy.json")
+    local heresyTable = loadjson(".\\tables\\heresy.JSON")
     self.founder = choice(heresyTable["founder"])
     self.major_heresy = choice(heresyTable["major_heresy"])
     self.attitude = choice(heresyTable["attitude"])

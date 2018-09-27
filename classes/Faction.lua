@@ -1,7 +1,7 @@
 Faction = class("Faction")
 
 function Faction:init(data)
-    local factionTable = loadjson("tables/faction.json")
+    local factionTable = loadjson(".\\tables\\faction.JSON")
     local tempNumber = RAND(1,3)
     local tempInfo = ""
     self.tags = {}

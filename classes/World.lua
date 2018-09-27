@@ -4,7 +4,7 @@ local World_mt = { __index = World }	-- metatable
 function World.new()	-- constructor
 
     local newWorld = { }
-    local worldTable = loadjson("tables/world.json")
+    local worldTable = loadjson(".\\tables\\world.JSON")
     newWorld.atmosphere=choice(worldTable["atmosphere"])
     newWorld.temperature=choice(worldTable["temperature"])
     newWorld.biosphere=choice(worldTable["biosphere"])

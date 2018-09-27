@@ -1,7 +1,7 @@
 Alien = class("Alien")
 
 function Alien:init(data)
-    local alienTable = loadjson("tables/alien.json")
+    local alienTable = loadjson(".\\tables\\alien.JSON")
     function GetLenses()
         local result = ""
         local selection1 = {1,2,2,3,4}

@@ -1,7 +1,7 @@
 Corporation = class("Corporation")
 
 function Corporation:init(data)
-    local corporationTable = loadjson("tables/corporation.json")
+    local corporationTable = loadjson(".\\tables\\corporation.JSON")
     self.name = choice(corporationTable["name"]).." "..choice(corporationTable["organization"])
     self.business = choice(corporationTable["business"])
     self.reputation = choice(corporationTable["reputation"])
