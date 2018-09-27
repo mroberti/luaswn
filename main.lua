@@ -1,4 +1,5 @@
-json = require( "json" )
+JSON = require( "JSON" )
+
 class = require("misclua.30log-global")
 Alien = require("classes.Alien")
 Adventure = require("classes.Adventure")
@@ -8,11 +9,18 @@ Corporation = require("classes.Corporation")
 Faction = require("classes.Faction")
 Planet = require("classes.Planet")
 PoliticalParty = require("classes.PoliticalParty")
+
 require("misclua.miscLibrary")
 RAND = math.random
 debug = true
 math.randomseed( os.time() )
 
-for i=1,1 do
-	local thePlanet = Planet:new()
-end
+local thePlanet = Planet:new()
+
+-- local theAdventure = Adventure:new()
+
+-- local theTrade = Trade:new()
+
+-- local theNPC = NPC:new()
+
+-- etc....
