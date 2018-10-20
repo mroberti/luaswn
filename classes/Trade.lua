@@ -10,7 +10,6 @@ function Trade:init(data)
     local sellingRange = choice({2, 2, 3, 3, 3, 3, 4})
     local wantedRange = choice({2, 2, 3, 3, 3, 3, 4})
     local unwantedRange = choice({1, 2, 3})
-    print("sellingRange "..sellingRange)
     while( #self.selling < sellingRange )
     do
         local tradeItem = choice(tradeTable["trade_item"][self.tech_level])
