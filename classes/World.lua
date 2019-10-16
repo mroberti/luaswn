@@ -10,14 +10,14 @@ function World.new()	-- constructor
     newWorld.biosphere=choice(worldTable["biosphere"])
     newWorld.population=choice(worldTable["population"])
     newWorld.tech_level=choice(worldTable["tech_level"])
-    print("Atmosphere: "..newWorld.atmosphere)
-    print("Temperature: "..newWorld.temperature)
-    print("Biosphere: "..newWorld.biosphere)
-    print("Population: "..newWorld.population)
-    print("Tech Level: "..newWorld.tech_level)
+    logger("Atmosphere: "..newWorld.atmosphere)
+    logger("Temperature: "..newWorld.temperature)
+    logger("Biosphere: "..newWorld.biosphere)
+    logger("Population: "..newWorld.population)
+    logger("Tech Level: "..newWorld.tech_level)
 
     newWorld.tags = {}
-    for i=1,RAND(1,3) do
+    for i=1,math.random(1,3) do
         table.insert(newWorld.tags,choice(worldTable["tags"]))
     end
     return setmetatable( newWorld, World_mt )

@@ -2,7 +2,7 @@ Faction = class("Faction")
 
 function Faction:init(data)
     local factionTable = loadjson(".\\tables\\faction.JSON")
-    local tempNumber = RAND(1,3)
+    local tempNumber = math.random(1,3)
     local tempInfo = ""
     self.tags = {}
     self.assets = {}
@@ -26,21 +26,21 @@ function Faction:init(data)
 
     while( #self.assets < tempInfo["assets"][1] )
     do
-        local tempNum = RAND(1,3)
+        local tempNum = math.random(1,3)
         -- Force
         if(tempNum==1)then
-            local tempNumber = RAND(1,self.force)
-            print("tempNumber "..tempNumber)
+            local tempNumber = math.random(1,self.force)
+            logger("tempNumber "..tempNumber)
             table.insert(self.assets,choice(factionTable["force"][tostring(tempNumber)]).."/Force "..tempNumber)
         end
         -- Wealth
         if(tempNum==2)then
-            local tempNumber = RAND(1,self.wealth)
+            local tempNumber = math.random(1,self.wealth)
             table.insert(self.assets,choice(factionTable["wealth"][tostring(tempNumber)]).."/Wealth "..tempNumber)
         end
         -- Cunning
         if(tempNum==3)then
-            local tempNumber = RAND(1,self.cunning)
+            local tempNumber = math.random(1,self.cunning)
             table.insert(self.assets,choice(factionTable["cunning"][tostring(tempNumber)]).."/Cunning "..tempNumber)
         end
 
@@ -48,7 +48,7 @@ function Faction:init(data)
         self.assets=StripDuplicates(self.assets)
     end
 
-    local numberOfTags=RAND(1,4)
+    local numberOfTags=math.random(1,4)
     while( #self.tags < numberOfTags )
     do
         table.insert(self.tags,choice(factionTable["tags"]))
@@ -57,17 +57,17 @@ function Faction:init(data)
     end
 
     if(debug)then
-        print("Type: "..self.type)
-        print("Hit Points: "..self.hit_points)
-        print("Force: "..self.force)
-        print("Cunning: "..self.cunning)
-        print("Wealth: "..self.wealth)
-        print("Tags:"..implode(', ',self.tags))
-        print("Assets: "..implode(', ',self.assets))
+        logger("Type: "..self.type)
+        logger("Hit Points: "..self.hit_points)
+        logger("Force: "..self.force)
+        logger("Cunning: "..self.cunning)
+        logger("Wealth: "..self.wealth)
+        logger("Tags:"..implode(', ',self.tags))
+        logger("Assets: "..implode(', ',self.assets))
     end
 
     -- M.sort(stats)
-    print("Largest is "..tempStats[1])
+    logger("Largest is "..tempStats[1])
 
 end
 

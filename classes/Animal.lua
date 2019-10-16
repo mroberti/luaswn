@@ -2,14 +2,14 @@ Animal = class("Animal")
 
 function Animal:init(data)
     -- Classes' variables
-    local animalTable = loadjson(".\\tables\\animal.JSON")
-
+    local myFile = lfs.currentdir().."\\tables\\animal.JSON"
+    local animalTable = loadjson(myFile)
     self.traits = ""
-    self.groupSize = RAND(1,7)
+    self.groupSize = math.random(1,7)
 
     local template = choice(animalTable["template"])
     if(template== "Hybrid")then
-        local num_templates = RAND(2,#animalTable["template"])
+        local num_templates = math.random(2,#animalTable["template"])
         local templates = {}
 
         while #templates< num_templates do
@@ -36,10 +36,10 @@ function Animal:init(data)
     end
     self.traits = template.." "..self.traits
     if(debug)then
-        print("Animal:")
-        print("Template: "..template)
-        print("Traits: "..self.traits)
-        print("Group size:"..self.groupSize)
+        logger("Animal:")
+        logger("Template: "..template)
+        logger("Traits: "..self.traits)
+        logger("Group size:"..self.groupSize)
     end
 end
 

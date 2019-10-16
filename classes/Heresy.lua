@@ -7,11 +7,11 @@ function Heresy:init(data)
     self.attitude = choice(heresyTable["attitude"])
     self.quirk = choice(heresyTable["quirk"])
     if(debug)then
-    	print("Heresy:")
-	    print("Founder: "..self.founder)
-	    print("Major Heresy: "..self.major_heresy)
-	    print("Attitude: "..self.attitude)
-	    print("Quirk: "..self.quirk)
+    	logger("Heresy:")
+	    logger("Founder: "..self.founder)
+	    logger("Major Heresy: "..self.major_heresy)
+	    logger("Attitude: "..self.attitude)
+	    logger("Quirk: "..self.quirk)
 	end
 end
 

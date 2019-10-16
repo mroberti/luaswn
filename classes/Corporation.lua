@@ -6,9 +6,9 @@ function Corporation:init(data)
     self.business = choice(corporationTable["business"])
     self.reputation = choice(corporationTable["reputation"])
     if(debug)then
-	    print("Corporation: "..self.name)
-	    print("Business: "..self.business)
-	    print("Reputation: "..self.reputation)
+	    logger("Corporation: "..self.name)
+	    logger("Business: "..self.business)
+	    logger("Reputation: "..self.reputation)
 	end
 end
 

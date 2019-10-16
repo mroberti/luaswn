@@ -1,11 +1,13 @@
 Architecture = class("Architecture")
 
 function Architecture:init(data)
-    local architectureTable = loadjson(".\\tables\\architecture.JSON")
+	-- logger("1 Current directory "..lfs.currentdir())
+	-- logger("----------")
+	local myFile = lfs.currentdir().."\\tables\\architecture.json"
+    local architectureTable = loadjson(myFile)
+    -- print_r(architectureTable)
     self.element = choice(architectureTable["element"])
-    if(debug)then
-	    print("Predominant architectural feature: "..self.element)
-	end
+	logger(self.element)
 end
 
 function Architecture:Serialize()

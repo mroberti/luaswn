@@ -7,11 +7,11 @@ function PoliticalParty:init(data)
     self.important_issues = choice(politicalTable["important_issues"])
     self.name = choice(politicalTable["descriptor"]).." "..choice(politicalTable["name"])
     if(debug)then
-        print("Political Party:")
-        print("Name: "..self.name)
-        print("Leadership: "..self.leadership)
-        print("Economic Policy: "..self.economic_policy)
-        print("Important Issues: "..self.important_issues)
+        logger("Political Party:")
+        logger("Name: "..self.name)
+        logger("Leadership: "..self.leadership)
+        logger("Economic Policy: "..self.economic_policy)
+        logger("Important Issues: "..self.important_issues)
     end
 end
 

@@ -11,13 +11,13 @@ function NPC:init(data)
     self.quirk          = choice(NPCTable["quirk"])
 
     if(debug)then
-        print("-")
-        print("Gender: "..self.gender)
-        print("Age: "..self.age)
-        print("Height: "..self.height)
-        print("Problems: "..self.problems)
-        print("Job Motivation: "..self.job_motivation)
-        print("Quirk: "..self.quirk)
+        logger("-")
+        logger("Gender: "..self.gender)
+        logger("Age: "..self.age)
+        logger("Height: "..self.height)
+        logger("Problems: "..self.problems)
+        logger("Job Motivation: "..self.job_motivation)
+        logger("Quirk: "..self.quirk)
     end
 end
 

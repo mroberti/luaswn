@@ -1,6 +1,53 @@
-widget = require("widget")
+local function doesFileExist( fname, path )
+ 
+    local results = false
+ 
+    -- Path for the file
+    local filePath = system.pathForFile( fname, path )
+ 
+    if ( filePath ) then
+        local file, errorString = io.open( filePath, "r" )
+ 
+        if not file then
+            -- Error occurred; output the cause
+            logger( "File error: " .. errorString )
+        else
+            -- File exists!
+            logger( "File found: " .. fname )
+            results = true
+            -- Close the file handle
+            file:close()
+        end
+    end
+ 
+    return results
+end
+
+function isFile(name)
+    if type(name)~="string" then return false end
+    if not isDir(name) then
+        return os.rename(name,name) and true or false
+        -- note that the short evaluation is to
+        -- return false instead of a possible nil
+    end
+    return false
+end
+
+function isFileOrDir(name)
+    if type(name)~="string" then return false end
+    return os.rename(name, name) and true or false
+end
+
+function isDir(name)
+    if type(name)~="string" then return false end
+    local cd = lfs.currentdir()
+    local is = lfs.chdir(name) and true or false
+    lfs.chdir(cd)
+    return is
+end
+
 function choice(passedTable)
-    local tempNumber = RAND(1,#passedTable)
+    local tempNumber = math.random(1,#passedTable)
     return passedTable[tempNumber]
 end
 
@@ -101,7 +148,7 @@ function StripDuplicates(t)
 
     for _,v in ipairs(t) do
        if (not hash[v]) then
-           res[#res+1] = v -- you could print here instead of saving to result table if you wanted
+           res[#res+1] = v -- you could logger here instead of saving to result table if you wanted
            hash[v] = true
        end
     end
@@ -117,16 +164,40 @@ function ShuffleTable(t)
     return shuffled
 end
 
-function loadjson(filename)
-    local path = system.pathForFile( filename, system.ResourceDirectory)
-    
-    local file = io.open( path, "r" )
-    local religionTable = json.decode(file:read( "*a" ))
-    
-    io.close( file )
-    file = nil    
-    return religionTable
+-- http://lua-users.org/wiki/FileInputOutput
+
+-- see if the file exists
+function file_exists(file)
+  local f = io.open(file, "rb")
+  if f then f:close() end
+  return f ~= nil
 end
+
+-- get all lines from a file, returns an empty 
+-- list/table if the file does not exist
+function lines_from(file)
+  if not file_exists(file) then return {} end
+  lines = {}
+  for line in io.lines(file) do 
+    lines[#lines + 1] = line
+  end
+  return lines
+end
+
+function readAll(file)
+    local f = assert(io.open(file, "rb"))
+    local content = f:read("*all")
+    f:close()
+    return content
+end
+
+function loadjson(file)
+    local f = assert(io.open(file, "rb"))
+    local content = f:read("*all")
+    f:close()
+    return JSON:decode(content)
+end
+
 function fitImage( displayObject, fitWidth, fitHeight, enlarge )
     --
     -- first determine which edge is out of bounds
@@ -151,240 +222,6 @@ function GetUserList(event)
     return result
 end
 
--- Function to create the widget
-function CreateButton(filename,passedID,buttonHandler)
-    local tempButton = widget.newButton
-    {
-        left = 0,
-        top = 0,
-        id = passedID,
-        defaultFile = filename,
-        onRelease =buttonHandler
-    }
-    return tempButton
-end
-
-function widget.newPanel( options )
-    print("options.location: "..options.location)
-    
-    local customOptions = options or {}
-    local opt = {}
-    opt.location = customOptions.location or "top"
-    
-    if ( opt.location == "top" or opt.location == "bottom" ) then
-        default_width = display.contentWidth
-        default_height = display.contentHeight * 0.33
-    else
-        default_width = display.contentWidth * 0.33
-        default_height = display.contentHeight
-    end
-    opt.width = customOptions.width or default_width
-    opt.height = customOptions.height or default_height
-    opt.speed = customOptions.speed or 500
-    opt.inEasing = customOptions.inEasing or easing.linear
-    opt.outEasing = customOptions.outEasing or easing.linear
-    if ( customOptions.onComplete and type(customOptions.onComplete) == "function" ) then
-        opt.listener = customOptions.onComplete
-    else 
-        opt.listener = nil
-    end   
-    local container = display.newGroup()    
-    
-    if ( opt.location == "left" ) then
-        container.x = display.screenOriginX
-        container.y = display.contentCenterY
-        container.anchorX = 1
-        container.anchorY = 0.5
-    elseif ( opt.location == "right" ) then
-        container.anchorX = 1
-        container.anchorY = 0.5       
-        container.x = display.actualContentWidth
-        container.y = display.contentCenterY
-    elseif ( opt.location == "top" ) then
-        container.anchorX = .5
-        container.anchorY = 0
-        container.x = display.contentCenterX
-        container.y = display.screenOriginY
-    else
-        container.x = display.contentCenterX
-        container.y = display.actualContentHeight
-    end
-    function container:show()
-        local options = {
-            time = 0,
-            transition = opt.linear
-        }
-        if ( opt.listener ) then
-            options.onComplete = opt.listener
-            self.completeState = "shown"
-        end
-        if ( opt.location == "top" ) then
-            options.y = display.screenOriginY
-        elseif ( opt.location == "bottom" ) then
-            options.y = display.actualContentHeight
-        elseif ( opt.location == "left" ) then
-            options.x = display.screenOriginX
-            options.y = 0
-        else
-            options.x = display.actualContentWidth
-        end 
-        transition.to( self, options )
-    end
-    function container:jump()
-        local options = {
-            time = 0,
-            transition = opt.linear
-        }
-        if ( opt.listener ) then
-            options.onComplete = opt.listener
-            self.completeState = "shown"
-        end
-        if ( opt.location == "top" ) then
-            options.y = display.screenOriginY
-        elseif ( opt.location == "bottom" ) then
-            options.y = display.actualContentHeight
-        elseif ( opt.location == "left" ) then
-            options.x = display.screenOriginX
-        else
-            options.x = display.actualContentWidth
-        end 
-        transition.to( self, options )
-    end
-    
-    function container:hide()
-        local options = {
-            time = opt.speed,
-            transition = opt.outEasing
-        }
-        if ( opt.listener ) then
-            options.onComplete = opt.listener
-            self.completeState = "hidden"
-        end
-        if ( opt.location == "top" ) then
-            options.y = -opt.height
-        elseif ( opt.location == "bottom" ) then
-            options.y = display.actualContentHeight+opt.height
-        elseif ( opt.location == "left" ) then
-            options.x = display.screenOriginX-opt.width
-        else
-            options.x = display.actualContentWidth+opt.width
-        end 
-        transition.to( self, options )
-    end
-    return container
-end
-
-function widget.newPanelContainer( options )
-    local customOptions = options or {}
-    local opt = {}
-    opt.location = customOptions.location or "top"
-    local default_width, default_height
-    if ( opt.location == "top" or opt.location == "bottom" ) then
-        default_width = display.contentWidth
-        default_height = display.contentHeight * 0.33
-    else
-        default_width = display.contentWidth * 0.33
-        default_height = display.contentHeight
-    end
-    opt.width = customOptions.width or default_width
-    opt.height = customOptions.height or default_height
-    opt.speed = customOptions.speed or 500
-    opt.inEasing = customOptions.inEasing or easing.linear
-    opt.outEasing = customOptions.outEasing or easing.linear
-    if ( customOptions.onComplete and type(customOptions.onComplete) == "function" ) then
-        opt.listener = customOptions.onComplete
-    else 
-        opt.listener = nil
-    end
-    local container = display.newContainer( opt.width, opt.height )
-    --    local container = display.newGroup()
-    container.width = opt.width
-    container.height = opt.height
-    if ( opt.location == "left" ) then
-        container.anchorX = 1.0
-        container.x = display.screenOriginX
-        container.anchorY = 0.5
-        container.y = display.contentCenterY
-    elseif ( opt.location == "right" ) then
-        container.anchorX = 0.0
-        container.x = display.actualContentWidth
-        container.anchorY = 0.5
-        container.y = display.contentCenterY
-    elseif ( opt.location == "top" ) then
-        container.anchorX = 0.5
-        container.x = display.contentCenterX
-        container.anchorY = 1.0
-        container.y = display.screenOriginY
-    else
-        container.anchorX = 0.5
-        container.x = display.contentCenterX
-        container.anchorY = 0.0
-        container.y = display.actualContentHeight
-    end
-    function container:show()
-        local options = {
-            time = opt.speed,
-            transition = opt.inEasing
-        }
-        if ( opt.listener ) then
-            options.onComplete = opt.listener
-            self.completeState = "shown"
-        end
-        if ( opt.location == "top" ) then
-            options.y = display.screenOriginY + opt.height
-        elseif ( opt.location == "bottom" ) then
-            options.y = display.actualContentHeight - opt.height
-        elseif ( opt.location == "left" ) then
-            options.x = display.screenOriginX + opt.width
-        else
-            options.x = 200 --display.actualContentWidth - opt.width
-        end 
-        transition.to( self, options )
-    end
-    function container:jump()
-        local options = {
-            time = 0,
-            transition = opt.linear
-        }
-        if ( opt.listener ) then
-            options.onComplete = opt.listener
-            self.completeState = "shown"
-        end
-        if ( opt.location == "top" ) then
-            options.y = display.screenOriginY + opt.height
-        elseif ( opt.location == "bottom" ) then
-            options.y = display.actualContentHeight   - opt.height
-        elseif ( opt.location == "left" ) then
-            options.x = display.screenOriginX + opt.width
-        else
-            options.x = display.actualContentWidth - opt.width
-        end 
-        transition.to( self, options )
-    end
-    
-    function container:hide()
-        local options = {
-            time = opt.speed,
-            transition = opt.outEasing
-        }
-        if ( opt.listener ) then
-            options.onComplete = opt.listener
-            self.completeState = "hidden"
-        end
-        if ( opt.location == "top" ) then
-            options.y = display.screenOriginY
-        elseif ( opt.location == "bottom" ) then
-            options.y = display.actualContentHeight
-        elseif ( opt.location == "left" ) then
-            options.x = display.screenOriginX
-        else
-            options.x = display.actualContentWidth
-        end 
-        transition.to( self, options )
-    end
-    return container
-end
-
 function ParseRoll(formula)
     local result
     if string.match(formula, "*") then
@@ -393,13 +230,13 @@ function ParseRoll(formula)
         local tempSplit = SplitString(formula, "*")
         local tempResult,rolls = rollDice(tempSplit[1])
         -- for i = 1, #rolls do
-        --     print( i, rolls[i] )
+        --     logger( i, rolls[i] )
         -- end
         result = tempResult*tonumber(tempSplit[2])    
     else
         local tempResult,rolls = rollDice(formula)
         -- for i = 1, #rolls do
-        --     print( i, rolls[i] )
+        --     logger( i, rolls[i] )
         -- end
         result = tempResult       
     end
@@ -558,34 +395,34 @@ function print_r ( t )
     local print_r_cache={}
     local function sub_print_r(t,indent)
         if (print_r_cache[tostring(t)]) then
-            print(indent.."*"..tostring(t))
+            logger(indent.."*"..tostring(t))
         else
             print_r_cache[tostring(t)]=true
             if (type(t)=="table") then
                 for pos,val in pairs(t) do
                     if (type(val)=="table") then
-                        print(indent.."["..pos.."] => "..tostring(t).." {")
+                        logger(indent.."["..pos.."] => "..tostring(t).." {")
                         sub_print_r(val,indent..string.rep(" ",string.len(pos)+4))
-                        print(indent..string.rep(" ",string.len(pos)+3).."}")
+                        logger(indent..string.rep(" ",string.len(pos)+3).."}")
                     elseif (type(val)=="string") then
-                        print(indent.."["..pos..'] => "'..val..'"')
+                        logger(indent.."["..pos..'] => "'..val..'"')
                     else
-                        print(indent.."["..pos.."] => "..tostring(val))
+                        logger(indent.."["..pos.."] => "..tostring(val))
                     end
                 end
             else
-                print(indent..tostring(t))
+                logger(indent..tostring(t))
             end
         end
     end
     if (type(t)=="table") then
-        print(tostring(t).." {")
+        logger(tostring(t).." {")
         sub_print_r(t," ")
-        print("}")
+        logger("}")
     else
         sub_print_r(t,"  ")
     end
-    print()
+    logger()
 end
 
 function GUID()
@@ -616,33 +453,8 @@ function GUID()
             guid.used[guid.currentGuid] = guid.currentGuid;
             return(guid.currentGuid);
         else
-            --print('Duplicated a Previously Created GUID.');
+            --logger('Duplicated a Previously Created GUID.');
         end
     end
     return(grid.currentGuid)
-end
-
-require("lfs")
-
-function isFile(name)
-    if type(name)~="string" then return false end
-    if not isDir(name) then
-        return os.rename(name,name) and true or false
-        -- note that the short evaluation is to
-        -- return false instead of a possible nil
-    end
-    return false
-end
-
-function isFileOrDir(name)
-    if type(name)~="string" then return false end
-    return os.rename(name, name) and true or false
-end
-
-function isDir(name)
-    if type(name)~="string" then return false end
-    local cd = lfs.currentdir()
-    local is = lfs.chdir(name) and true or false
-    lfs.chdir(cd)
-    return is
 end

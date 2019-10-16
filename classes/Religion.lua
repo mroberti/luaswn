@@ -7,10 +7,10 @@ function Religion:init(data)
     self.origin_tradition = choice(religionTable["origin_tradition"])
 
     if(debug)then
-    	print("Religion:")
-	    print("Evolution: "..self.evolution)
-	    print("Leadership: "..self.leadership)
-	    print("Origin Tradition: "..self.origin_tradition)
+    	logger("Religion:")
+	    logger("Evolution: "..self.evolution)
+	    logger("Leadership: "..self.leadership)
+	    logger("Origin Tradition: "..self.origin_tradition)
 	end
 end
 

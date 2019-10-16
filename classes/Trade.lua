@@ -20,23 +20,23 @@ function Trade:init(data)
         table.insert(self.selling,theString)
         -- local price = tradeTable["item_detail"][tradeItem]["base_price"]
         -- local tons = tradeTable["item_detail"][tradeItem]["tons"]
-        -- print("Tons "..ParseRoll(tons))
+        -- logger("Tons "..ParseRoll(tons))
         -- -- Strip any duplicates...
         self.selling=StripDuplicates(self.selling)
     end
-    print("")
-    print("Selling:")
-    print("----------------")
-    print("Price Per Ton: "..self.selling[1])
+    logger("")
+    logger("Selling:")
+    logger("----------------")
+    logger("Price Per Ton: "..self.selling[1])
     if(#self.selling>1)then
         for i=2, #self.selling do
-            print("               "..self.selling[i])
+            logger("               "..self.selling[i])
         end
-        print("")
-        print("")
+        logger("")
+        logger("")
     end
-    print("Purchase Prices:")
-    print("----------------")
+    logger("Purchase Prices:")
+    logger("----------------")
     while( #self.wanted < wantedRange )
     do
         local tradeItem = choice(tradeTable["trade_item"][self.tech_level])
@@ -46,17 +46,17 @@ function Trade:init(data)
         table.insert(self.wanted,theString)
         -- local price = tradeTable["item_detail"][tradeItem]["base_price"]
         -- local tons = tradeTable["item_detail"][tradeItem]["tons"]
-        -- print("Tons "..ParseRoll(tons))
+        -- logger("Tons "..ParseRoll(tons))
         -- -- Strip any duplicates...
         self.wanted=StripDuplicates(self.wanted)
     end
-    print("Wanted:   "..self.wanted[1])
+    logger("Wanted:   "..self.wanted[1])
     if(#self.wanted>1)then
         for i=2, #self.wanted do
-            print("          "..self.wanted[i])
+            logger("          "..self.wanted[i])
         end
-        print("")
-        print("")
+        logger("")
+        logger("")
     end
 
     while( #self.unwanted < unwantedRange )
@@ -68,19 +68,19 @@ function Trade:init(data)
         table.insert(self.unwanted,theString)
         -- local price = tradeTable["item_detail"][tradeItem]["base_price"]
         -- local tons = tradeTable["item_detail"][tradeItem]["tons"]
-        -- print("Tons "..ParseRoll(tons))
+        -- logger("Tons "..ParseRoll(tons))
         -- -- Strip any duplicates...
         self.unwanted=StripDuplicates(self.unwanted)
     end
 
-    print("Unwanted: "..self.unwanted[1])
+    logger("Unwanted: "..self.unwanted[1])
 
     if(#self.unwanted>1)then
         for i=2, #self.unwanted do
-            print("          "..self.unwanted[i])
+            logger("          "..self.unwanted[i])
         end
-        print("")
-        print("")
+        logger("")
+        logger("")
     end
 
     local size = #tradeTable["trade_item"][self.tech_level]
@@ -90,7 +90,7 @@ function Trade:init(data)
         local tradeItem = shuffledTradeItems[i]
         local itemDetails = tradeTable["item_detail"][tradeItem]
         local price
-        local tempNum = RAND(1,2)
+        local tempNum = math.random(1,2)
         if(tempNum==1)then
             price = itemDetails.base_price - (itemDetails.base_price*(ParseRoll(itemDetails.standard_value)/100))
         else
@@ -108,7 +108,7 @@ function Trade:init(data)
     --     local tradeItem = choice(tradeTable["trade_item"][self.tech_level])
     --     local itemDetails = tradeTable["item_detail"][tradeItem]
     --     local price
-    --     local tempNum = RAND(1,2)
+    --     local tempNum = math.random(1,2)
     --     if(tempNum==1)then
     --         price = itemDetails.base_price - (itemDetails.base_price*(ParseRoll(itemDetails.standard_value)/100))
     --     else
@@ -121,13 +121,13 @@ function Trade:init(data)
     --     table.insert(self.other,theString)
     -- end
 
-    print("Other:    "..self.other[1])
+    logger("Other:    "..self.other[1])
     if(#self.other>1)then
         for i=2, #self.other do
-            print("          "..self.other[i])
+            logger("          "..self.other[i])
         end
-        print("")
-        print("")
+        logger("")
+        logger("")
     end
 
 
